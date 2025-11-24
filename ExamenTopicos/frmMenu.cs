@@ -34,5 +34,11 @@ namespace ExamenTopicos
             frmClases frmClases = new frmClases();
             frmClases.Show();
         }
+
+        private void btnProbarConexion_Click(object sender, EventArgs e)
+        {
+            Datos datos = new Datos();
+            datos.TestConnection();
+        }
     }
 }

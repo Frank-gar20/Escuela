@@ -54,7 +54,7 @@ namespace ExamenTopicos
                 if (!(string.IsNullOrEmpty(txtNombre.Text) || string.IsNullOrEmpty(txtApellidos.Text) || string.IsNullOrEmpty(txtNoTarjeta.Text)))
                 {
                     bool resultado;
-                    Datos data = new Datos();
+                    Datos dato = new Datos();
 
                     if (id == -1)
                     {
@@ -62,7 +62,7 @@ namespace ExamenTopicos
                              "VALUES ('" + txtNoTarjeta.Text + "', '" + txtNombre.Text + "', '" + txtApellidos.Text + "', '" +
                              dtpFechaNac.Value.ToString("yyyy-MM-dd") + "', '" + txtEspecialidad.Text + "')";
 
-                        resultado = data.ExecuteQuery(query);
+                        resultado = dato.ExecuteQuery(query);
                         if (resultado)
                         {
                             MessageBox.Show("Registro agregado", "Sistema",
@@ -83,7 +83,7 @@ namespace ExamenTopicos
                              "fecha_nac = '" + dtpFechaNac.Value.ToString("yyyy-MM-dd") + "', " +
                              "especialidad = '" + txtEspecialidad.Text + "' " +
                              "WHERE id_profesor = " + id;
-                        resultado = data.ExecuteQuery(query);
+                        resultado = dato.ExecuteQuery(query);
                         if (resultado)
                         {
                             MessageBox.Show("Registro Acutalizdo", "Sistemas", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -141,13 +141,13 @@ namespace ExamenTopicos
             DataTable dt = datos.getAlldata("SELECT * FROM profesores WHERE id_profesor = " + id);
             if (dt != null && dt.Rows.Count > 0)
             {
-                DataRow row = dt.Rows[0];
+                DataRow r = dt.Rows[0];
 
-                txtNoTarjeta.Text = row["num_tarjeta"].ToString();
-                txtNombre.Text = row["nombre"].ToString();
-                txtApellidos.Text = row["apellido"].ToString();
-                dtpFechaNac.Value = Convert.ToDateTime(row["fecha_nac"]);
-                txtEspecialidad.Text = row["especialidad"].ToString();
+                txtNoTarjeta.Text = r["num_tarjeta"].ToString();
+                txtNombre.Text = r["nombre"].ToString();
+                txtApellidos.Text = r["apellido"].ToString();
+                dtpFechaNac.Value = Convert.ToDateTime(r["fecha_nac"]);
+                txtEspecialidad.Text = r["especialidad"].ToString();
             }
             else
             {

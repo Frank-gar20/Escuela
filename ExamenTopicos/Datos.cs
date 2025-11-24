@@ -18,14 +18,14 @@ namespace ExamenTopicos
         {
             try
             {
-                SqlConnection cnx = new SqlConnection(connectionString);
-                cnx.Open();
-                return cnx;
+                SqlConnection conectar = new SqlConnection(connectionString);
+                conectar.Open();
+                return conectar;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al conectar a SQL Server:\n" + ex.Message,
-                    "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    "Sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
         }
@@ -34,9 +34,9 @@ namespace ExamenTopicos
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand(query, GetConnection()))
+                using (SqlCommand comando = new SqlCommand(query, GetConnection()))
                 {
-                    cmd.ExecuteNonQuery();
+                    comando.ExecuteNonQuery();
                     return true;
                 }
             }
@@ -52,25 +52,25 @@ namespace ExamenTopicos
         {
             try
             {
-                using (var cnx = GetConnection())
+                using (var conectar = GetConnection())
                 {
-                    if (cnx != null && cnx.State == ConnectionState.Open)
+                    if (conectar != null && conectar.State == ConnectionState.Open)
                     {
-                        MessageBox.Show("Conexión exitosa a SQL Server.",
-                            "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Conexion exitosa a SQLServer",
+                            "Sistema", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return true;
                     }
                     else
                     {
-                        MessageBox.Show("No se pudo establecer conexión.",
-                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("No se pudo establecer conexión",
+                            "Sistema", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return false;
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al probar conexión:\n" + ex.Message);
+                MessageBox.Show("Error de prueba en conexión:\n" + ex.Message);
                 return false;
             }
         }
@@ -78,39 +78,30 @@ namespace ExamenTopicos
         public DataTable getAlldata(string query)
         {
             DataTable dt = new DataTable();
-
             try
             {
-                // 1. Obtener la conexión y asegurar que se cierra
-                using (SqlConnection cnx = GetConnection())
+                using (SqlConnection conectar = GetConnection())
                 {
-                    if (cnx == null) return null;
+                    if (conectar == null)
+                        return null;
 
-                    // 2. Crear el comando SQL
-                    using (SqlCommand cmd = new SqlCommand(query, cnx))
+                    using (SqlCommand cmd = new SqlCommand(query, conectar))
                     {
-                        // 3. Ejecutar la consulta para obtener el lector de datos
-                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        using (SqlDataReader leer = cmd.ExecuteReader())
                         {
-                            // 4. Llenar las Columnas del DataTable
-                            // Lo hacemos antes de empezar a leer las filas
-                            for (int i = 0; i < reader.FieldCount; i++)
+                            for (int i = 0; i < leer.FieldCount; i++)
                             {
-                                // Agregamos el nombre de la columna y su tipo de dato
-                                dt.Columns.Add(reader.GetName(i), reader.GetFieldType(i));
+                                dt.Columns.Add(leer.GetName(i), leer.GetFieldType(i));
                             }
 
-                            // 5. Llenar las Filas del DataTable (Usando un bucle)
-                            // El método Read() avanza al siguiente registro y devuelve true si hay más.
-                            while (reader.Read()) // Esto reemplaza el 'for' que mencionó el profe
+                            while (leer.Read())
                             {
-                                object[] rowValues = new object[reader.FieldCount];
-                                // Usamos un 'for' para leer todos los campos de la fila actual
-                                for (int i = 0; i < reader.FieldCount; i++)
+                                object[] datos = new object[leer.FieldCount];
+                                for (int i = 0; i < leer.FieldCount; i++)
                                 {
-                                    rowValues[i] = reader.GetValue(i);
+                                    datos[i] = leer.GetValue(i);
                                 }
-                                dt.Rows.Add(rowValues); // Agregar la fila al DataTable
+                                dt.Rows.Add(datos);
                             }
                         }
                     }

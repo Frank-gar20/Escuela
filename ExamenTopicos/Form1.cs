@@ -54,7 +54,7 @@ namespace ExamenTopicos
                 if (!(string.IsNullOrEmpty(txtNombre.Text) || string.IsNullOrEmpty(txtApellidos.Text) || string.IsNullOrEmpty(txtNoControl.Text)))
                 {
                     bool resultado;
-                    Datos data = new Datos();
+                    Datos dato = new Datos();
 
                     if (id == -1)
                     {
@@ -62,7 +62,7 @@ namespace ExamenTopicos
                              "VALUES ('" + txtNoControl.Text + "', '" + txtNombre.Text + "', '" + txtApellidos.Text + "', '" +
                              dtpFechaNac.Value.ToString("yyyy-MM-dd") + "', '" + txtCorreo.Text + "')";
 
-                        resultado = data.ExecuteQuery(query);
+                        resultado = dato.ExecuteQuery(query);
                         if (resultado)
                         {
                             MessageBox.Show("Registro agregado", "Sistema",
@@ -83,7 +83,7 @@ namespace ExamenTopicos
                              "fecha_nac = '" + dtpFechaNac.Value.ToString("yyyy-MM-dd") + "', " +
                              "correo = '" + txtCorreo.Text + "' " +
                              "WHERE id_alumno = " + id;
-                        resultado = data.ExecuteQuery(query);
+                        resultado = dato.ExecuteQuery(query);
                         if (resultado)
                         {
                             MessageBox.Show("Registro Acutalizdo", "Sistemas", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -141,13 +141,13 @@ namespace ExamenTopicos
             DataTable dt = datos.getAlldata("SELECT * FROM alumnos WHERE id_alumno = " + id);
             if (dt != null && dt.Rows.Count > 0)
             {
-                DataRow row = dt.Rows[0];
+                DataRow r = dt.Rows[0];
 
-                txtNoControl.Text = row["num_control"].ToString();
-                txtNombre.Text = row["nombre"].ToString();
+                txtNoControl.Text = r["num_control"].ToString();
+                txtNombre.Text = r["nombre"].ToString();
                 txtApellidos.Text = row["apellido"].ToString();
-                dtpFechaNac.Value = Convert.ToDateTime(row["fecha_nac"]);
-                txtCorreo.Text = row["correo"].ToString();
+                dtpFechaNac.Value = Convert.ToDateTime(r["fecha_nac"]);
+                txtCorreo.Text = r["correo"].ToString();
             }
             else
             {

@@ -33,7 +33,7 @@ namespace ExamenTopicos
             cbIdAlumno.SelectedIndex = 0;
             cbIdProfesor.SelectedIndex = 0;
             this.id = -1;
-            btnAgregar.Text = "Agretar";
+            btnAgregar.Text = "Agregar";
         }
 
         public frmClases()
@@ -43,24 +43,23 @@ namespace ExamenTopicos
 
         private void CargarAlumnos()
         {
-            DataTable dtAlumnos = datos.getAlldata("SELECT id_alumno, nombre AS Nombre FROM alumnos ORDER BY id_alumno");
+            DataTable dtAlumnos = datos.getAlldata("SELECT id_alumno, num_control AS control FROM alumnos ORDER BY id_alumno");
 
             if (dtAlumnos != null)
             {
                 cbIdAlumno.DataSource = dtAlumnos;
-                cbIdAlumno.DisplayMember = "Nombre";
+                cbIdAlumno.DisplayMember = "control";
                 cbIdAlumno.ValueMember = "id_alumno";
             }
         }
-
         private void CargarProfesores()
         {
-            DataTable dtProfesores = datos.getAlldata("SELECT id_profesor, nombre AS Nombre FROM profesores ORDER BY id_profesor");
+            DataTable dtProfesores = datos.getAlldata("SELECT id_profesor, num_tarjeta AS tarjeta FROM profesores ORDER BY id_profesor");
 
             if (dtProfesores != null)
             {
                 cbIdProfesor.DataSource = dtProfesores;
-                cbIdProfesor.DisplayMember = "Nombre";
+                cbIdProfesor.DisplayMember = "tarjeta";
                 cbIdProfesor.ValueMember = "id_profesor";
             }
         }
@@ -86,14 +85,14 @@ namespace ExamenTopicos
                 if (!(string.IsNullOrEmpty(txtNombreClase.Text)))
                 {
                     bool resultado;
-                    Datos data = new Datos();
+                    Datos dato = new Datos();
 
                     if (id == -1)
                     {
                         string query = "INSERT INTO clases (nombre, id_profesor, id_alumno) " +
                              "VALUES ('" + txtNombreClase.Text + "', " + Convert.ToInt32(cbIdProfesor.SelectedValue) + ", " + Convert.ToInt32(cbIdAlumno.SelectedValue)+")";
 
-                        resultado = data.ExecuteQuery(query);
+                        resultado = dato.ExecuteQuery(query);
                         if (resultado)
                         {
                             MessageBox.Show("Registro agregado", "Sistema",
@@ -112,7 +111,7 @@ namespace ExamenTopicos
                              "id_profesor = " + Convert.ToInt32(cbIdProfesor.SelectedValue) + ", " +
                              "id_alumno = " + Convert.ToInt32(cbIdAlumno.SelectedValue) +
                              " WHERE id_profesor = " + id;
-                        resultado = data.ExecuteQuery(query);
+                        resultado = dato.ExecuteQuery(query);
                         if (resultado)
                         {
                             MessageBox.Show("Registro Acutalizdo", "Sistemas", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -184,11 +183,11 @@ namespace ExamenTopicos
             DataTable dt = datos.getAlldata("SELECT * FROM clases WHERE id_clase = " + id);
             if (dt != null && dt.Rows.Count > 0)
             {
-                DataRow row = dt.Rows[0];
+                DataRow r = dt.Rows[0];
 
-                txtNombreClase.Text = row["nombre"].ToString();
-                cbIdProfesor.Text = row["id_profesor"].ToString();
-                cbIdAlumno.Text = row["id_alumno"].ToString();
+                txtNombreClase.Text = r["nombre"].ToString();
+                cbIdProfesor.Text = r["id_profesor"].ToString();
+                cbIdAlumno.Text = r["id_alumno"].ToString();
             }
             else
             {
