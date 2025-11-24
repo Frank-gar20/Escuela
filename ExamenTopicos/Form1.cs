@@ -170,9 +170,7 @@ namespace ExamenTopicos
         {
             DataTable dt = datos.getAlldata("select * from alumnos where " +
                 "nombre like '%" + txtBuscar.Text + "%' or " +
-                "a_paterno like '%" + txtBuscar.Text + "%' or " +
-                "a_materno like '%" + txtBuscar.Text + "%' or " +
-                "No_Control like '%" + txtBuscar.Text + "%'");
+                "apellido like '%" + txtBuscar.Text + "%'");
             if (dt != null)
             {
                 dgvDatos.DataSource = dt;
